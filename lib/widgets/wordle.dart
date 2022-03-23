@@ -68,6 +68,7 @@ class Wordle extends ChangeNotifier {
     var index = rand.nextInt(allWords.length);
 
     _word = allWords[index].toUpperCase().split('');
+    debugPrint(_word.join());
   }
 
   void addLetter(String letter) {
