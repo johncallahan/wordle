@@ -3,30 +3,30 @@ import 'package:provider/provider.dart';
 import 'package:wordle/models/letter_state.dart';
 import 'package:wordle/widgets/wordle.dart';
 
-class GameLetter extends StatelessWidget {
+class GaimeLetter extends StatelessWidget {
   final int col;
   final int row;
   bool isSubmitted = false;
   String _letter = '';
   LetterState _letterState = LetterState.unknown;
 
-  GameLetter(this.col, this.row, {Key? key}) : super(key: key);
+  GaimeLetter(this.col, this.row, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var game = context.watch<Wordle>();
+    var gaime = context.watch<Wordle>();
 
-    if (game.guesses.length > col && game.guesses[col].length > row) {
-      _letter = game.guesses[col][row];
+    if (gaime.guesses.length > col && gaime.guesses[col].length > row) {
+      _letter = gaime.guesses[col][row];
     } else {
       _letter = '';
     }
 
-    if (game.currentGuess > col && _letter != '' ||
-        game.isWon && game.currentGuess == col) {
+    if (gaime.currentGuess > col && _letter != '' ||
+        gaime.isWon && gaime.currentGuess == col) {
       // only display letter state for old guesses
-      // or if game is won
-      _letterState = game.guessLetterStates[col][row];
+      // or if gaime is won
+      _letterState = gaime.guessLetterStates[col][row];
     }
 
     return Padding(

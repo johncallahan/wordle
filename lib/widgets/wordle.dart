@@ -3,15 +3,22 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wordle/models/letter_state.dart';
+import 'package:wordle/widgets/wordle.dart';
 
-import 'game.dart';
+import 'gaime.dart';
 import 'keyboard.dart';
+
+import 'package:provider/provider.dart';
+
+import 'connected.dart';
 
 class WordleWidget extends StatelessWidget {
   const WordleWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final wordle = Provider.of<Wordle>(context);
+    print('Did you  win yet? ${wordle.isWon}');
     return Scaffold(
       appBar: AppBar(
         title: const Text('WORDLE'),
@@ -19,10 +26,13 @@ class WordleWidget extends StatelessWidget {
         foregroundColor: Colors.black,
         centerTitle: true,
         shadowColor: Colors.transparent,
+        actions: <Widget>[
+          Connected(),
+        ],
       ),
       body: Column(
         children: const [
-          Game(),
+          Gaime(),
           Keyboard(),
         ],
       ),

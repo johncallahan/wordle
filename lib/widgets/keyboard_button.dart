@@ -16,10 +16,10 @@ class KeyboardButton extends StatefulWidget {
 class _KeyboardButtonState extends State<KeyboardButton> {
   @override
   Widget build(BuildContext context) {
-    var game = context.watch<Wordle>();
+    var gaime = context.watch<Wordle>();
 
     var letter = widget._value.codeUnitAt(0) - 65;
-    var letterState = game.letterStates[letter];
+    var letterState = gaime.letterStates[letter];
 
     return Padding(
       padding: const EdgeInsets.only(left: 1.0, right: 1.0),
@@ -37,7 +37,7 @@ class _KeyboardButtonState extends State<KeyboardButton> {
           ),
           onPressed: () {
             setState(() {
-              game.addLetter(widget._value);
+              gaime.addLetter(widget._value);
             });
           },
         ),
