@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:wordle/models/letter_state.dart';
 import 'package:wordle/widgets/wordle.dart';
 
+import 'package:http/http.dart' as http;
+
 import 'gaime.dart';
 import 'keyboard.dart';
 
@@ -17,11 +19,23 @@ import '../models/game.dart';
 
 import 'connected.dart';
 
-class WordleWidget extends HookConsumerWidget {
+class WordleWidget extends ConsumerStatefulWidget {
   const WordleWidget({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _WordleWidgetState createState() => _WordleWidgetState();
+}
+
+class _WordleWidgetState extends ConsumerState<WordleWidget> {
+  int pageIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final wordle = ref.watch(wordleChangeNotifier);
 
     if(wordle.isWon && !wordle.isRecorded) {
@@ -45,12 +59,12 @@ class WordleWidget extends HookConsumerWidget {
                   if (state.isLoading) {
                     return CircularProgressIndicator();
                   }
-                  return Column(
+                  return pageIndex == 0 ? Column(
                     children: const [
                       Gaime(),
                       Keyboard(),
                     ],
-                  );
+                  ) : GamesScreen();
                 }
               ),
         ),
@@ -66,24 +80,44 @@ class WordleWidget extends HookConsumerWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-          IconButton(
-            enableFeedback: false,
-            onPressed: () {},
-            icon: const Icon(
-              Icons.home_outlined,
-              color: Colors.white,
-              size: 35,
-            ),
-          ),
-          IconButton(
-            enableFeedback: false,
-            onPressed: () {},
-            icon: const Icon(
-              Icons.work_outline_outlined,
-              color: Colors.white,
-              size: 35,
-            ),
-          ),
+            IconButton(
+                enableFeedback: false,
+                onPressed: () {
+                  setState(() {
+                    pageIndex = 0;
+                  });
+                },
+                icon: pageIndex == 0
+                    ? const Icon(
+                        Icons.home_filled,
+                        color: Colors.white,
+                        size: 35,
+                      )
+                    : const Icon(
+                        Icons.home_outlined,
+                        color: Colors.white,
+                        size: 35,
+                      ),
+              ),
+            IconButton(
+                enableFeedback: false,
+                onPressed: () {
+                  setState(() {
+                    pageIndex = 1;
+                  });
+                },
+                icon: pageIndex == 1
+                    ? const Icon(
+                        Icons.work_rounded,
+                        color: Colors.white,
+                        size: 35,
+                      )
+                    : const Icon(
+                        Icons.work_outline_outlined,
+                        color: Colors.white,
+                        size: 35,
+                      ),
+              ),
             ],
           ),
         )
@@ -219,5 +253,66 @@ class Wordle extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+}
+
+class GamesScreen extends HookConsumerWidget {
+  Future<bool> checkConnection() async {
+    var url = Uri.parse('http://127.0.0.1:3000/games');
+    try {
+      var response = await http.get(url);
+      print("service UP");
+      return true;
+    } catch(_) {
+      print("service DOWN");
+      return false;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.games.watchAll(params: {'_limit': 5}, syncLocal: true);
+    final _newGameController = useTextEditingController();
+
+    if (state.isLoading) {
+      return CircularProgressIndicator();
+    }
+    return RefreshIndicator(
+      onRefresh: () async {
+          if(await checkConnection()) {
+            ref.games.findAll(params: {'_limit': 5}, syncLocal: true);
+            final provider = repositoryProviders['games'];
+            if (provider != null) {
+              final operations = ref.read(provider).offlineOperations;
+              print('== Retrying (${operations.length} operations) ==');
+              await operations.retry();
+            }
+          }
+      },
+      child: ListView(
+        children: [
+          TextField(
+            controller: _newGameController,
+            onSubmitted: (value) async {
+              Game(word: value).init(ref.read).save();
+              _newGameController.clear();
+            },
+          ),
+          for (final game in state.model)
+            Dismissible(
+              key: ValueKey(game),
+              direction: DismissDirection.endToStart,
+              onDismissed: (_) => game.delete(),
+              child: ListTile(
+                leading: Checkbox(
+                  value: game.guesses > 0,
+                  onChanged: (value) => game.toggleGuesses().save(),
+                ),
+                title: Text('${game.word} [id: ${game.id}]'),
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }
