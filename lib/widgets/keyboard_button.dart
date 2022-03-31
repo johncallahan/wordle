@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:wordle/models/letter_state.dart';
 import 'package:wordle/widgets/wordle.dart';
 
-class KeyboardButton extends StatefulWidget {
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_data/flutter_data.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+
+class KeyboardButton extends ConsumerStatefulWidget {
   String _value;
   LetterState _letterState = LetterState.unknown;
 
@@ -13,10 +16,10 @@ class KeyboardButton extends StatefulWidget {
   _KeyboardButtonState createState() => _KeyboardButtonState();
 }
 
-class _KeyboardButtonState extends State<KeyboardButton> {
+class _KeyboardButtonState extends ConsumerState<KeyboardButton> {
   @override
   Widget build(BuildContext context) {
-    var gaime = context.watch<Wordle>();
+    var gaime = ref.watch(wordleChangeNotifier);
 
     var letter = widget._value.codeUnitAt(0) - 65;
     var letterState = gaime.letterStates[letter];

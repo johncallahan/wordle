@@ -2,18 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wordle/widgets/wordle.dart';
 
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_data/flutter_data.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+
 import 'keyboard_button.dart';
 
-class Keyboard extends StatefulWidget {
+class Keyboard extends ConsumerStatefulWidget {
   const Keyboard({Key? key}) : super(key: key);
 
   @override
   _KeyboardState createState() => _KeyboardState();
 }
 
-class _KeyboardState extends State<Keyboard> {
+class _KeyboardState extends ConsumerState<Keyboard> {
   @override
   Widget build(BuildContext context) {
+    var gaime = ref.watch(wordleChangeNotifier);
     return Column(
       children: [
         Row(
@@ -52,7 +57,7 @@ class _KeyboardState extends State<Keyboard> {
               child: TextButton(
                 onPressed: () {
                   setState(() {
-                    Provider.of<Wordle>(context, listen: false).submitGuess();
+                    gaime.submitGuess();
                   });
                 },
                 child: const Text(
@@ -79,7 +84,7 @@ class _KeyboardState extends State<Keyboard> {
               child: TextButton(
                 onPressed: () {
                   setState(() {
-                    Provider.of<Wordle>(context, listen: false).backspace();
+                    gaime.backspace();
                   });
                 },
                 child: const Icon(

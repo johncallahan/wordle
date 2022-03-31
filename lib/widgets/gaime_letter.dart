@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:wordle/models/letter_state.dart';
 import 'package:wordle/widgets/wordle.dart';
 
-class GaimeLetter extends StatelessWidget {
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_data/flutter_data.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+
+class GaimeLetter extends ConsumerWidget {
   final int col;
   final int row;
   bool isSubmitted = false;
@@ -13,8 +16,8 @@ class GaimeLetter extends StatelessWidget {
   GaimeLetter(this.col, this.row, {Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    var gaime = context.watch<Wordle>();
+  Widget build(BuildContext context, WidgetRef ref) {
+    var gaime = ref.watch(wordleChangeNotifier);
 
     if (gaime.guesses.length > col && gaime.guesses[col].length > row) {
       _letter = gaime.guesses[col][row];
