@@ -21,11 +21,7 @@ class WordleWidget extends StatelessWidget {
     print('Did you  win yet? ${wordle.isWon}');
     return Scaffold(
       appBar: AppBar(
-        title: const Text('WORDLE'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        centerTitle: true,
-        shadowColor: Colors.transparent,
+        title: const Text('Wordle'),
         actions: <Widget>[
           Connected(),
         ],

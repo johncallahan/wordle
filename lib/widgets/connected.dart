@@ -35,14 +35,6 @@ class _ConnectedState extends ConsumerState<Connected> {
     try {
       var response = await http.get(url);
       setState(() { _connected = true; });
-
-      ref.games.findAll(params: {'_limit': 5}, syncLocal: true);
-      final provider = repositoryProviders['games'];
-      if (provider != null) {
-        final operations = ref.read(provider).offlineOperations;
-        print('== Retrying (${operations.length} operations) ==');
-        await operations.retry();
-      }
     } catch(_) {
       setState(() { _connected = false; });
     }
