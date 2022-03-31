@@ -39,7 +39,7 @@ class _WordleWidgetState extends ConsumerState<WordleWidget> {
     final wordle = ref.watch(wordleChangeNotifier);
 
     if(wordle.isWon && !wordle.isRecorded) {
-      Game(word: wordle.getWord()).init(ref.read).save();
+      Game(word: wordle.getWord(), guesses: wordle.currentGuess).init(ref.read).save();
       wordle.isRecorded = true;
     }
 
@@ -291,26 +291,27 @@ class GamesScreen extends HookConsumerWidget {
       },
       child: ListView(
         children: [
-          TextField(
-            controller: _newGameController,
-            onSubmitted: (value) async {
-              Game(word: value).init(ref.read).save();
-              _newGameController.clear();
-            },
-          ),
+          //TextField(
+          //  controller: _newGameController,
+          //  onSubmitted: (value) async {
+          //    Game(word: value).init(ref.read).save();
+          //    _newGameController.clear();
+          //  },
+          //),
           for (final game in state.model)
-            Dismissible(
-              key: ValueKey(game),
-              direction: DismissDirection.endToStart,
-              onDismissed: (_) => game.delete(),
-              child: ListTile(
-                leading: Checkbox(
-                  value: game.guesses > 0,
-                  onChanged: (value) => game.toggleGuesses().save(),
-                ),
-                title: Text('${game.word} [id: ${game.id}]'),
+            //Dismissible(
+            //  key: ValueKey(game),
+            //  direction: DismissDirection.endToStart,
+            //  onDismissed: (_) => game.delete(),
+            //  child:
+              ListTile(
+                //leading: Checkbox(
+                //  value: game.guesses > 0,
+                //  onChanged: (value) => game.toggleGuesses().save(),
+                //),
+                title: Text('${game.word} [${game.guesses} guesses]'),
               ),
-            ),
+            //),
         ],
       ),
     );
