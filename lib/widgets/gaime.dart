@@ -11,7 +11,8 @@ class Gaime extends StatelessWidget {
       alignment: Alignment.center,
       child: Column(
         children: [
-          SizedBox(height: 35),
+          //SizedBox(height: 35),
+          SizedBox(height: 5),
           Row(
             children: [
               GaimeLetter(0, 0),
