@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_data/flutter_data.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-
+import 'my_shared_preferences.dart';
 import '../main.data.dart';
 
 class Connected extends ConsumerStatefulWidget {
@@ -17,11 +17,17 @@ class Connected extends ConsumerStatefulWidget {
 class _ConnectedState extends ConsumerState<Connected> {
   Timer? timer;
   bool _connected = false;
+  String hostname = "";
 
   @override
   void initState() {
     super.initState();
     timer = Timer.periodic(Duration(seconds: 15), (Timer t) => checkConnection());
+    MySharedPreferences.instance
+        .getStringValue("hostname")
+        .then((value) => setState(() {
+              hostname = value;
+            }));
   }
 
   @override
@@ -31,7 +37,8 @@ class _ConnectedState extends ConsumerState<Connected> {
   }
 
   void checkConnection() async {
-    var url = Uri.parse('http://127.0.0.1:3000/games');
+    //print('checking $hostname up');
+    var url = Uri.parse(hostname+'/games');
     try {
       var response = await http.get(url);
       setState(() { _connected = true; });

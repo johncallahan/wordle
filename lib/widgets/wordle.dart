@@ -9,6 +9,11 @@ import 'package:http/http.dart' as http;
 
 import 'gaime.dart';
 import 'keyboard.dart';
+import 'gamescreen.dart';
+
+import 'my_shared_preferences.dart';
+import 'login.dart';
+import 'profile.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_data/flutter_data.dart';
@@ -28,10 +33,22 @@ class WordleWidget extends ConsumerStatefulWidget {
 
 class _WordleWidgetState extends ConsumerState<WordleWidget> {
   int pageIndex = 0;
+  bool isLoggedIn = false;
+  String playerid = "";
 
   @override
   void initState() {
     super.initState();
+    MySharedPreferences.instance
+      .getBooleanValue("loggedin")
+      .then((value) => setState(() {
+          isLoggedIn = value;
+        }));
+    MySharedPreferences.instance
+      .getStringValue("playerid")
+      .then((value) => setState(() {
+          playerid = value;
+        }));
   }
 
   @override
@@ -39,7 +56,7 @@ class _WordleWidgetState extends ConsumerState<WordleWidget> {
     final wordle = ref.watch(wordleChangeNotifier);
 
     if(wordle.isWon && !wordle.isRecorded) {
-      Game(word: wordle.getWord(), guesses: wordle.currentGuess).init(ref.read).save();
+      Game(word: wordle.getWord(), guesses: wordle.currentGuess, playerid: playerid).init(ref.read).save();
       wordle.isRecorded = true;
     }
 
@@ -64,7 +81,8 @@ class _WordleWidgetState extends ConsumerState<WordleWidget> {
                       Gaime(),
                       Keyboard(),
                     ],
-                  ) : GamesScreen();
+                  ) : pageIndex == 1 ? GamesScreen()
+                  : isLoggedIn ? Profile() : Login();
                 }
               ),
         ),
@@ -108,16 +126,35 @@ class _WordleWidgetState extends ConsumerState<WordleWidget> {
                 },
                 icon: pageIndex == 1
                     ? const Icon(
-                        Icons.work_rounded,
+                        Icons.featured_play_list,
                         color: Colors.white,
                         size: 35,
                       )
                     : const Icon(
-                        Icons.work_outline_outlined,
+                        Icons.view_list,
                         color: Colors.white,
                         size: 35,
                       ),
               ),
+            IconButton(
+                enableFeedback: false,
+                onPressed: () {
+                  setState(() {
+                    pageIndex = 2;
+                  });
+                },
+                icon: pageIndex == 2
+                    ? const Icon(
+                        Icons.settings_applications_outlined,
+                        color: Colors.white,
+                        size: 35,
+                      )
+                    : const Icon(
+                        Icons.settings,
+                        color: Colors.white,
+                        size: 35,
+                      ),
+                ),
             ],
           ),
         )
@@ -132,6 +169,7 @@ final wordleChangeNotifier = ChangeNotifierProvider.autoDispose<Wordle>((ref) {
 class Wordle extends ChangeNotifier {
   int currentGuess = 0;
   List<String> guesses = List.filled(6, '', growable: false);
+  String hostname = "http://localhost:3000";
 
   // List of letter states for all letters. This gets updated as you guess.
   List<LetterState> letterStates = List.filled(26, LetterState.unknown);
@@ -162,6 +200,8 @@ class Wordle extends ChangeNotifier {
     guesses = List.filled(6, '', growable: false);
     letterStates = List.filled(26, LetterState.unknown);
     guessLetterStates = [];
+
+    hostname = await MySharedPreferences.instance.getStringValue("hostname");
 
     if (allWords.isEmpty) {
       var words = await rootBundle.loadString('assets/wordlists/words.txt');
@@ -253,67 +293,5 @@ class Wordle extends ChangeNotifier {
     }
 
     notifyListeners();
-  }
-}
-
-class GamesScreen extends HookConsumerWidget {
-  Future<bool> checkConnection() async {
-    var url = Uri.parse('http://127.0.0.1:3000/games');
-    try {
-      var response = await http.get(url);
-      print("service UP");
-      return true;
-    } catch(_) {
-      print("service DOWN");
-      return false;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.games.watchAll(params: {'_limit': 5}, syncLocal: true);
-    final _newGameController = useTextEditingController();
-
-    if (state.isLoading) {
-      return CircularProgressIndicator();
-    }
-    return RefreshIndicator(
-      onRefresh: () async {
-          if(await checkConnection()) {
-            ref.games.findAll(params: {'_limit': 5}, syncLocal: true);
-            final provider = repositoryProviders['games'];
-            if (provider != null) {
-              final operations = ref.read(provider).offlineOperations;
-              print('== Retrying (${operations.length} operations) ==');
-              await operations.retry();
-            }
-          }
-      },
-      child: ListView(
-        children: [
-          //TextField(
-          //  controller: _newGameController,
-          //  onSubmitted: (value) async {
-          //    Game(word: value).init(ref.read).save();
-          //    _newGameController.clear();
-          //  },
-          //),
-          for (final game in state.model)
-            //Dismissible(
-            //  key: ValueKey(game),
-            //  direction: DismissDirection.endToStart,
-            //  onDismissed: (_) => game.delete(),
-            //  child:
-              ListTile(
-                //leading: Checkbox(
-                //  value: game.guesses > 0,
-                //  onChanged: (value) => game.toggleGuesses().save(),
-                //),
-                title: Text('${game.word} [${game.guesses} guesses]'),
-              ),
-            //),
-        ],
-      ),
-    );
   }
 }
