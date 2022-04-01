@@ -169,7 +169,7 @@ final wordleChangeNotifier = ChangeNotifierProvider.autoDispose<Wordle>((ref) {
 class Wordle extends ChangeNotifier {
   int currentGuess = 0;
   List<String> guesses = List.filled(6, '', growable: false);
-  String hostname = "http://localhost:3000";
+  //String hostname = "http://localhost:3000";
 
   // List of letter states for all letters. This gets updated as you guess.
   List<LetterState> letterStates = List.filled(26, LetterState.unknown);
@@ -201,7 +201,7 @@ class Wordle extends ChangeNotifier {
     letterStates = List.filled(26, LetterState.unknown);
     guessLetterStates = [];
 
-    hostname = await MySharedPreferences.instance.getStringValue("hostname");
+    //hostname = await MySharedPreferences.instance.getStringValue("hostname");
 
     if (allWords.isEmpty) {
       var words = await rootBundle.loadString('assets/wordlists/words.txt');

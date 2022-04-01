@@ -6,6 +6,8 @@ import 'package:flutter_data/flutter_data.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'my_shared_preferences.dart';
 import '../main.data.dart';
+import '../environment_config.dart';
+
 
 class Connected extends ConsumerStatefulWidget {
   const Connected({Key? key}) : super(key: key);
@@ -38,7 +40,7 @@ class _ConnectedState extends ConsumerState<Connected> {
 
   void checkConnection() async {
     //print('checking $hostname up');
-    var url = Uri.parse(hostname+'/games');
+    var url = Uri.parse(EnvironmentConfig.BASE_PROTOCOL + "://" + EnvironmentConfig.BASE_HOST + ":" + EnvironmentConfig.BASE_PORT + '/games');
     try {
       var response = await http.get(url);
       setState(() { _connected = true; });

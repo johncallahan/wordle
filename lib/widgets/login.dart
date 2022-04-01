@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'my_shared_preferences.dart';
 import 'profile.dart';
 import 'package:http/http.dart' as http;
+import '../environment_config.dart';
+
 
 
 class Login extends StatefulWidget {
@@ -18,7 +20,7 @@ class LoginState extends State<Login> {
   TextEditingController controllerPlayerId = new TextEditingController();
 
   Future<String> getPlayerName(String playerid) async {
-    var url = Uri.parse('http://127.0.0.1:3000/players/${playerid}');
+    var url = Uri.parse(EnvironmentConfig.BASE_PROTOCOL + "://" + EnvironmentConfig.BASE_HOST + ":" + EnvironmentConfig.BASE_PORT + '/players/${playerid}');
     try {
       var response = await http.get(url);
       var jsonResponse = convert.jsonDecode(response.body) as Map<String, dynamic>;

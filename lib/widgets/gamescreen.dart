@@ -13,10 +13,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../main.data.dart';
 import '../models/game.dart';
+import '../environment_config.dart';
+
 
 class GamesScreen extends HookConsumerWidget {
   Future<bool> checkConnection() async {
-    var url = Uri.parse('http://127.0.0.1:3000/games');
+    var url = Uri.parse(EnvironmentConfig.BASE_PROTOCOL + "://" + EnvironmentConfig.BASE_HOST + ":" + EnvironmentConfig.BASE_PORT + '/games');
     try {
       var response = await http.get(url);
       print("service UP");
