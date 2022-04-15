@@ -11,32 +11,56 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_data/flutter_data.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import 'my_shared_preferences.dart';
+
 import '../main.data.dart';
 import '../models/game.dart';
 import '../environment_config.dart';
 
+class GamesScreen extends StatefulHookConsumerWidget {
+  const GamesScreen({Key? key}) : super(key: key);
 
-class GamesScreen extends HookConsumerWidget {
+  @override
+  _GamesScreenState createState() => _GamesScreenState();
+}
+
+class _GamesScreenState extends ConsumerState<GamesScreen> {
+  String playername = "";
+
   Future<bool> checkConnection() async {
     var url = Uri.parse(EnvironmentConfig.BASE_PROTOCOL + "://" + EnvironmentConfig.BASE_HOST + ":" + EnvironmentConfig.BASE_PORT + '/games');
     try {
       var response = await http.get(url);
-      print("service UP");
+      //print("service UP");
       return true;
     } catch(_) {
-      print("service DOWN");
+      //print("service DOWN");
       return false;
     }
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    super.initState();
+    MySharedPreferences.instance
+      .getStringValue("playername")
+      .then((value) => setState(() {
+          playername = value;
+        }));
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.games.watchAll(params: {'_limit': 5}, syncLocal: true);
-    final _newGameController = useTextEditingController();
+    //final _newGameController = useTextEditingController();
 
     if (state.isLoading) {
       return CircularProgressIndicator();
     }
+
+    Map<String,int> map = {};
+    state.model.forEach((x) => map[x.playerid] = (map[x.playerid] ?? 0) + x.guesses);
+
     return RefreshIndicator(
       onRefresh: () async {
           if(await checkConnection()) {
@@ -58,7 +82,7 @@ class GamesScreen extends HookConsumerWidget {
           //    _newGameController.clear();
           //  },
           //),
-          for (final game in state.model)
+          for (final k in map.keys)
             //Dismissible(
             //  key: ValueKey(game),
             //  direction: DismissDirection.endToStart,
@@ -69,7 +93,8 @@ class GamesScreen extends HookConsumerWidget {
                 //  value: game.guesses > 0,
                 //  onChanged: (value) => game.toggleGuesses().save(),
                 //),
-                title: Text('${game.word} [${game.guesses} guesses by ${game.playerid}]'),
+                //title: Text('${game.word} [${game.guesses} guesses by ${game.playerid}]'),
+                title: Text('${map[k]} ${map[k] == 1 ? "guess" : "guesses"} by ${k} ${k == playername ? "(YOU)" : ""}'),
               ),
             //),
         ],
