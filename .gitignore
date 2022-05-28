@@ -865,3 +865,4 @@ Temporary Items
 # generated files
 lib/main.data.dart
 lib/models/game.g.dart
+lib/models/guess.g.dart

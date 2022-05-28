@@ -8,7 +8,7 @@ A [Wordle](https://www.powerlanguage.co.uk/wordle/) clone in Flutter.
 
 ## To run on android (local dev)
 
-% flutter run --dart-define=BASE_PROTOCOL=http --dart-define=BASE_HOST=localhost --dart-define=BASE_PORT=3000
+% flutter run --dart-define=BASE_PROTOCOL=http --dart-define=BASE_HOST=10.0.2.2 --dart-define=BASE_PORT=3000
 
 ## To run on iPhone (local dev)
 
@@ -21,3 +21,7 @@ A [Wordle](https://www.powerlanguage.co.uk/wordle/) clone in Flutter.
 ## To run on iPhone (production)
 
 % flutter run --dart-define=BASE_PROTOCOL=https --dart-define=BASE_HOST=yourdomain.com --dart-define=BASE_PORT=443 --release
+
+## To run disconnected (e.g., on airplane)
+
+% flutter run --no-pub --dart-define=BASE_PROTOCOL=http --dart-define=BASE_HOST=10.0.2.2 --dart-define=BASE_PORT=3000

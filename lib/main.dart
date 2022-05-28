@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'main.data.dart';
 import 'models/game.dart';
+import 'models/guess.dart';
 
 import 'widgets/wordle.dart';
 

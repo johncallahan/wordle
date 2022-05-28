@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'gaime.dart';
 import 'keyboard.dart';
 import 'gamescreen.dart';
+import 'guessscreen.dart';
 
 import 'my_shared_preferences.dart';
 import 'login.dart';
@@ -21,6 +22,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../main.data.dart';
 import '../models/game.dart';
+import '../models/guess.dart';
 
 import 'connected.dart';
 
@@ -53,6 +55,7 @@ class _WordleWidgetState extends ConsumerState<WordleWidget> {
 
   @override
   Widget build(BuildContext context) {
+    //final state = ref.guesses.watchAll(params: {'_limit': 5}, syncLocal: true);
     final wordle = ref.watch(wordleChangeNotifier);
 
     if(wordle.isWon && !wordle.isRecorded) {
@@ -111,6 +114,25 @@ class _WordleWidgetState extends ConsumerState<WordleWidget> {
               },
               icon: pageIndex == 2
                   ? const Icon(
+                      Icons.question_mark_outlined,
+                      color: Colors.white,
+                      size: 35,
+                    )
+                  : const Icon(
+                      Icons.question_mark,
+                      color: Colors.white,
+                      size: 35,
+                    ),
+              ),
+          IconButton(
+              enableFeedback: false,
+              onPressed: () {
+                setState(() {
+                  pageIndex = 3;
+                });
+              },
+              icon: pageIndex == 3
+                  ? const Icon(
                       Icons.settings_applications_outlined,
                       color: Colors.white,
                       size: 35,
@@ -139,6 +161,7 @@ class _WordleWidgetState extends ConsumerState<WordleWidget> {
                       Keyboard(),
                     ],
                   ) : pageIndex == 1 ? GamesScreen()
+                  : pageIndex == 2 ? GuessesScreen()
                   : isLoggedIn ? Profile() : Login();
                 }
               ),

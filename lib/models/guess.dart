@@ -3,28 +3,27 @@ import 'package:json_annotation/json_annotation.dart';
 import '../widgets/my_shared_preferences.dart';
 import '../environment_config.dart';
 
-part 'game.g.dart';
+part 'guess.g.dart';
 
 @JsonSerializable()
 @DataRepository([JSONServerAdapter])
-class Game with DataModel<Game> {
+class Guess with DataModel<Guess> {
   @override
   final int? id;
-  final String word;
-  final int guesses;
+  final String letters;
   final String playerid;
 
-  Game({this.id, required this.word, this.guesses = 0, required this.playerid});
-
-  Game toggleGuesses() {
-    return Game(id: this.id, word: this.word, guesses: this.guesses > 0 ? 0 : 1, playerid: this.playerid)
-        .was(this);
-  }
+  Guess({this.id, required this.letters, required this.playerid});
 }
 
-mixin JSONServerAdapter on RemoteAdapter<Game> {
+mixin JSONServerAdapter on RemoteAdapter<Guess> {
   @override
   String get baseUrl => EnvironmentConfig.BASE_PROTOCOL + "://" + EnvironmentConfig.BASE_HOST + ":" + EnvironmentConfig.BASE_PORT;
+
+  @override
+  String urlForFindAll(Map<String, dynamic> params) {
+    return "guesses";
+  }
 
   @override
   Future<Map<String, String>> get defaultHeaders async {
