@@ -7,10 +7,11 @@ import 'package:wordle/widgets/wordle.dart';
 
 import 'package:http/http.dart' as http;
 
-import 'gaime.dart';
-import 'keyboard.dart';
+import 'game_widget.dart';
+import 'keyboard_widget.dart';
 import 'gamescreen.dart';
 import 'guessscreen.dart';
+import 'game_widget.dart';
 
 import 'my_shared_preferences.dart';
 import 'login.dart';
@@ -56,12 +57,12 @@ class _WordleWidgetState extends ConsumerState<WordleWidget> {
   @override
   Widget build(BuildContext context) {
     //final state = ref.guesses.watchAll(params: {'_limit': 5}, syncLocal: true);
-    final wordle = ref.watch(wordleChangeNotifier);
+    //final wordle = ref.watch(wordleChangeNotifier);
 
-    if(wordle.isWon && !wordle.isRecorded) {
-      Game(word: wordle.getWord(), guesses: wordle.currentGuess, playerid: playerid).init(ref.read).save();
-      wordle.isRecorded = true;
-    }
+    //if(wordle.isWon && !wordle.isRecorded) {
+    //  Game(word: wordle.getWord(), guesses: wordle.currentGuess, playerid: playerid).init(ref.read).save();
+    //  wordle.isRecorded = true;
+    //}
 
     return Scaffold(
       appBar: AppBar(
@@ -151,14 +152,14 @@ class _WordleWidgetState extends ConsumerState<WordleWidget> {
                 error: (error, _) => Text(error.toString()),
                 loading: () => const CircularProgressIndicator(),
                 data: (_) {
-                  final state = ref.games.watchAll();
+                  final state = ref.guesses.watchAll();
                   if (state.isLoading) {
                     return CircularProgressIndicator();
                   }
                   return pageIndex == 0 ? Column(
                     children: const [
-                      Gaime(),
-                      Keyboard(),
+                      GameWidget(),
+                      KeyboardWidget(),
                     ],
                   ) : pageIndex == 1 ? GamesScreen()
                   : pageIndex == 2 ? GuessesScreen()
