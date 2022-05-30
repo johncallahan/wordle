@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:wordle/models/letter_state.dart';
 import 'package:wordle/widgets/wordle.dart';
 
+import 'wordle_logic.dart';
+
 import 'package:http/http.dart' as http;
 
 import 'game_widget.dart';
@@ -38,6 +40,7 @@ class _WordleWidgetState extends ConsumerState<WordleWidget> {
   int pageIndex = 0;
   bool isLoggedIn = false;
   String playerid = "";
+  WordleLogic _wordleLogic = WordleLogic();
 
   @override
   void initState() {
@@ -157,9 +160,9 @@ class _WordleWidgetState extends ConsumerState<WordleWidget> {
                     return CircularProgressIndicator();
                   }
                   return pageIndex == 0 ? Column(
-                    children: const [
-                      GameWidget(),
-                      KeyboardWidget(),
+                    children: [
+                      GameWidget(_wordleLogic),
+                      KeyboardWidget(_wordleLogic),
                     ],
                   ) : pageIndex == 1 ? GamesScreen()
                   : pageIndex == 2 ? GuessesScreen()

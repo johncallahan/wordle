@@ -14,27 +14,50 @@ import '../models/guess.dart';
 class GameLetterWidget extends HookConsumerWidget {
   final int col;
   final int row;
-  final WordleLogic logic;
+  final WordleLogic _logic;
   bool isSubmitted = false;
   String _letter = '';
   LetterState _letterState = LetterState.unknown;
 
-  GameLetterWidget(this.logic, this.col, this.row, {Key? key}) : super(key: key);
+  GameLetterWidget(this._logic, this.col, this.row, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.guesses.watchAll(params: {'_limit': 5}, syncLocal: true);
 
-    print("HELLO WORLD = ${logic.getWord()}");
+    var myList = List.from(state.model);
 
-    if (state.model.length > col && state.model[col].letters.length > row) {
-      _letter = state.model[col].letters.split('')[row];
+    myList.sort((a, b) {
+      if(a == null) {
+        return -1;
+      } else if(b == null) {
+        return 1;
+      } else if(a.id == null) {
+        return -1;
+      } else if(b.id == null) {
+        return 1;
+      } else {
+        return a.id.compareTo(b.id);
+      }
+    });
+    int i = 0;
+    for(var guess in myList) {
+      print(guess.letters);
+      _logic.submitGuess(ref,guess.letters,i++,false);
+    }
+
+    //print("HELLO WORLD = ${_logic.getWord()}");
+
+    if (myList.length > col && myList[col].letters.length > row) {
+      _letter = myList[col].letters.split('')[row];
+    } else if(myList.length == col && _logic.currentGuess.length > row) {
+      _letter = _logic.currentGuess.split('')[row];
     } else {
       _letter = '';
     }
 
-    if (state.model.length > col && _letter != '') {
-      _letterState = LetterState.unknown;
+    if (myList.length > col && myList[col].letters.length > row) {
+      _letterState = _logic.processLetter(_letter,row);
     }
 
     return Padding(

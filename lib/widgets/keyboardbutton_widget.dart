@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:wordle/models/letter_state.dart';
 import 'package:wordle/widgets/wordle.dart';
 
+import 'wordle_logic.dart';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_data/flutter_data.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class KeyboardButtonWidget extends ConsumerStatefulWidget {
   String _value;
+  WordleLogic _logic;
   LetterState _letterState = LetterState.unknown;
 
-  KeyboardButtonWidget(this._value, {Key? key}) : super(key: key);
+  KeyboardButtonWidget(this._logic, this._value, {Key? key}) : super(key: key);
 
   @override
   _KeyboardButtonWidgetState createState() => _KeyboardButtonWidgetState();
@@ -19,8 +22,9 @@ class KeyboardButtonWidget extends ConsumerStatefulWidget {
 class _KeyboardButtonWidgetState extends ConsumerState<KeyboardButtonWidget> {
   @override
   Widget build(BuildContext context) {
+    final myLogic = ref.watch(logicChangeNotifier);
     var letter = widget._value.codeUnitAt(0) - 65;
-    var letterState = LetterState.unknown;
+    var letterState = widget._logic.letterStates[letter];
 
     return Padding(
       padding: const EdgeInsets.only(left: 1.0, right: 1.0),
@@ -37,9 +41,9 @@ class _KeyboardButtonWidgetState extends ConsumerState<KeyboardButtonWidget> {
             textStyle: MaterialStateProperty.all(_getTextStyle(letterState)),
           ),
           onPressed: () {
-            setState(() {
-              //gaime.addLetter(widget._value);
-            });
+            //setState(() {
+              widget._logic.addLetter(widget._value);
+            //});
           },
         ),
       ),

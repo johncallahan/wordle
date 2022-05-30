@@ -11,15 +11,14 @@ import '../main.data.dart';
 import '../models/game.dart';
 
 class GameWidget extends StatefulHookConsumerWidget {
-  const GameWidget({Key? key}) : super(key: key);
+  WordleLogic _logic;
+  GameWidget(this._logic, {Key? key}) : super(key: key);
 
   @override
   _GameWidgetState createState() => _GameWidgetState();
 }
 
 class _GameWidgetState extends ConsumerState<GameWidget> {
-  WordleLogic _wordleLogic = WordleLogic();
-
   @override
   void initState() {
     super.initState();
@@ -27,6 +26,8 @@ class _GameWidgetState extends ConsumerState<GameWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final myLogic = ref.watch(logicChangeNotifier);
+    WordleLogic _wordleLogic = widget._logic;
     return Container(
       alignment: Alignment.center,
       child: Column(
