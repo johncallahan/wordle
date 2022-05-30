@@ -119,7 +119,7 @@ class WordleLogic extends ChangeNotifier {
     return currLetterState;
   }
 
-  void submitGuess(WidgetRef ref, String guessString, int numOfGuesses, bool recordIt) {
+  void submitGuess(WidgetRef ref, String guessString, int numOfGuesses, bool recordIt, String playerid) {
     if (!_isActive || (isWon && !recordIt)) {
       return;
     }
@@ -138,19 +138,19 @@ class WordleLogic extends ChangeNotifier {
     if (recordIt && currLetterState.every((l) => l == LetterState.correctSpot)) {
       // check for win
       isWon = true;
-      Guess(letters: currentGuess, playerid: "sPLSBgz").init(ref.read).save();
-      Game(word: currentGuess, guesses: numOfGuesses, playerid: "sPLSBgz").init(ref.read).save();
+      Guess(letters: currentGuess, playerid: playerid).init(ref.read).save();
+      Game(word: currentGuess, guesses: numOfGuesses, playerid: playerid).init(ref.read).save();
     } else if (currLetterState.every((l) => l == LetterState.correctSpot)) {
       isWon = true;
     } else if (numOfGuesses >= 5) {
       // sorry, you lost
       _isActive = false;
       if(recordIt) {
-        Guess(letters: currentGuess, playerid: "sPLSBgz").init(ref.read).save();
-        Game(word: currentGuess, guesses: 99, playerid: "sPLSBgz").init(ref.read).save();
+        Guess(letters: currentGuess, playerid: playerid).init(ref.read).save();
+        Game(word: currentGuess, guesses: 99, playerid: playerid).init(ref.read).save();
       }
     } else if (recordIt) {
-      Guess(letters: currentGuess, playerid: "sPLSBgz").init(ref.read).save();
+      Guess(letters: currentGuess, playerid: playerid).init(ref.read).save();
     }
 
     if(recordIt) notifyListeners();

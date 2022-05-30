@@ -14,11 +14,12 @@ import '../models/guess.dart';
 class GameLetterWidget extends HookConsumerWidget {
   final int col;
   final int row;
+  String playerid = "";
   bool isSubmitted = false;
   String _letter = '';
   LetterState _letterState = LetterState.unknown;
 
-  GameLetterWidget(this.col, this.row, {Key? key}) : super(key: key);
+  GameLetterWidget(this.playerid, this.col, this.row, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,7 +45,7 @@ class GameLetterWidget extends HookConsumerWidget {
     _logic.isWon = false;
     for(var guess in myList) {
       //print(guess.letters);
-      _logic.submitGuess(ref,guess.letters,i++,false);
+      _logic.submitGuess(ref,guess.letters,i++,false,playerid);
     }
 
     //print("HELLO WORLD = ${_logic.getWord()}");

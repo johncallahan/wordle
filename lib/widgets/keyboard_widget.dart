@@ -6,6 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_data/flutter_data.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import 'my_shared_preferences.dart';
+
 import 'wordle_logic.dart';
 
 import '../main.data.dart';
@@ -21,9 +23,16 @@ class KeyboardWidget extends ConsumerStatefulWidget {
 }
 
 class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
+  String playerid = "";
+
   @override
   void initState() {
     super.initState();
+    MySharedPreferences.instance
+      .getStringValue("playerid")
+      .then((value) => setState(() {
+          playerid = value;
+        }));
   }
 
   @override
@@ -69,7 +78,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
               child: TextButton(
                 onPressed: () {
                   setState(() {
-                    _logic.submitGuess(ref,_logic.currentGuess,state.model.length,true);
+                    _logic.submitGuess(ref,_logic.currentGuess,state.model.length,true,playerid);
                     _logic.currentGuess = "";
                   });
                 },

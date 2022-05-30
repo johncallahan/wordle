@@ -4,6 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_data/flutter_data.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import 'my_shared_preferences.dart';
+
 import 'gameletter_widget.dart';
 import 'wordle_logic.dart';
 
@@ -18,9 +20,16 @@ class GameWidget extends StatefulHookConsumerWidget {
 }
 
 class _GameWidgetState extends ConsumerState<GameWidget> {
+  String playerid = "";
+
   @override
   void initState() {
     super.initState();
+    MySharedPreferences.instance
+      .getStringValue("playerid")
+      .then((value) => setState(() {
+          playerid = value;
+        }));
   }
 
   @override
@@ -34,61 +43,61 @@ class _GameWidgetState extends ConsumerState<GameWidget> {
           SizedBox(height: 5),
           Row(
             children: [
-              GameLetterWidget(0, 0),
-              GameLetterWidget(0, 1),
-              GameLetterWidget(0, 2),
-              GameLetterWidget(0, 3),
-              GameLetterWidget(0, 4),
+              GameLetterWidget(playerid, 0, 0),
+              GameLetterWidget(playerid, 0, 1),
+              GameLetterWidget(playerid, 0, 2),
+              GameLetterWidget(playerid, 0, 3),
+              GameLetterWidget(playerid, 0, 4),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
           Row(
             children: [
-              GameLetterWidget(1, 0),
-              GameLetterWidget(1, 1),
-              GameLetterWidget(1, 2),
-              GameLetterWidget(1, 3),
-              GameLetterWidget(1, 4),
+              GameLetterWidget(playerid, 1, 0),
+              GameLetterWidget(playerid, 1, 1),
+              GameLetterWidget(playerid, 1, 2),
+              GameLetterWidget(playerid, 1, 3),
+              GameLetterWidget(playerid, 1, 4),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
           Row(
             children: [
-              GameLetterWidget(2, 0),
-              GameLetterWidget(2, 1),
-              GameLetterWidget(2, 2),
-              GameLetterWidget(2, 3),
-              GameLetterWidget(2, 4),
+              GameLetterWidget(playerid, 2, 0),
+              GameLetterWidget(playerid, 2, 1),
+              GameLetterWidget(playerid, 2, 2),
+              GameLetterWidget(playerid, 2, 3),
+              GameLetterWidget(playerid, 2, 4),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
           Row(
             children: [
-              GameLetterWidget(3, 0),
-              GameLetterWidget(3, 1),
-              GameLetterWidget(3, 2),
-              GameLetterWidget(3, 3),
-              GameLetterWidget(3, 4),
+              GameLetterWidget(playerid, 3, 0),
+              GameLetterWidget(playerid, 3, 1),
+              GameLetterWidget(playerid, 3, 2),
+              GameLetterWidget(playerid, 3, 3),
+              GameLetterWidget(playerid, 3, 4),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
           Row(
             children: [
-              GameLetterWidget(4, 0),
-              GameLetterWidget(4, 1),
-              GameLetterWidget(4, 2),
-              GameLetterWidget(4, 3),
-              GameLetterWidget(4, 4),
+              GameLetterWidget(playerid, 4, 0),
+              GameLetterWidget(playerid, 4, 1),
+              GameLetterWidget(playerid, 4, 2),
+              GameLetterWidget(playerid, 4, 3),
+              GameLetterWidget(playerid, 4, 4),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
           Row(
             children: [
-              GameLetterWidget(5, 0),
-              GameLetterWidget(5, 1),
-              GameLetterWidget(5, 2),
-              GameLetterWidget(5, 3),
-              GameLetterWidget(5, 4),
+              GameLetterWidget(playerid, 5, 0),
+              GameLetterWidget(playerid, 5, 1),
+              GameLetterWidget(playerid, 5, 2),
+              GameLetterWidget(playerid, 5, 3),
+              GameLetterWidget(playerid, 5, 4),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
