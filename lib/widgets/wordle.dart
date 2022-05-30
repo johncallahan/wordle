@@ -161,8 +161,8 @@ class _WordleWidgetState extends ConsumerState<WordleWidget> {
                   }
                   return pageIndex == 0 ? Column(
                     children: [
-                      GameWidget(_wordleLogic),
-                      KeyboardWidget(_wordleLogic),
+                      GameWidget(),
+                      KeyboardWidget(),
                     ],
                   ) : pageIndex == 1 ? GamesScreen()
                   : pageIndex == 2 ? GuessesScreen()

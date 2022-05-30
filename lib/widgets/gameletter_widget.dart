@@ -14,15 +14,15 @@ import '../models/guess.dart';
 class GameLetterWidget extends HookConsumerWidget {
   final int col;
   final int row;
-  final WordleLogic _logic;
   bool isSubmitted = false;
   String _letter = '';
   LetterState _letterState = LetterState.unknown;
 
-  GameLetterWidget(this._logic, this.col, this.row, {Key? key}) : super(key: key);
+  GameLetterWidget(this.col, this.row, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final _logic = ref.watch(logicChangeNotifier);
     final state = ref.guesses.watchAll(params: {'_limit': 5}, syncLocal: true);
 
     var myList = List.from(state.model);
@@ -41,8 +41,9 @@ class GameLetterWidget extends HookConsumerWidget {
       }
     });
     int i = 0;
+    _logic.isWon = false;
     for(var guess in myList) {
-      print(guess.letters);
+      //print(guess.letters);
       _logic.submitGuess(ref,guess.letters,i++,false);
     }
 

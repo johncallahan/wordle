@@ -16,8 +16,6 @@ final logicChangeNotifier = ChangeNotifierProvider.autoDispose<WordleLogic>((ref
 });
 
 class WordleLogic extends ChangeNotifier {
-  static final WordleLogic _instance = WordleLogic._internal();
-
   String currentGuess = "";
   // List of letter states for all letters. This gets updated as you guess.
   List<LetterState> letterStates = List.filled(26, LetterState.unknown);
@@ -38,11 +36,7 @@ class WordleLogic extends ChangeNotifier {
     _word = allWords[index].toUpperCase().split('');
   }
 
-  factory WordleLogic() {
-    return _instance;
-  }
-
-  WordleLogic._internal() {
+  WordleLogic() {
     isWon = false;
     _isActive = true;
     isRecorded = false;
@@ -60,7 +54,7 @@ class WordleLogic extends ChangeNotifier {
   }
 
   void addLetter(String letter) {
-    if (!_isActive) {
+    if (isWon || !_isActive) {
       return;
     }
 
@@ -90,7 +84,9 @@ class WordleLogic extends ChangeNotifier {
   }
 
   LetterState processLetter(String letter, int position) {
-    if (letter == _word[position]) {
+    if(_word.length == 0) {
+      return LetterState.unknown;
+    } else if (letter == _word[position]) {
       return LetterState.correctSpot;
     } else if (_word.contains(letter)) {
       // TODO: Inefficient if the word has letters that repeat?
@@ -124,7 +120,7 @@ class WordleLogic extends ChangeNotifier {
   }
 
   void submitGuess(WidgetRef ref, String guessString, int numOfGuesses, bool recordIt) {
-    if (!_isActive) {
+    if (!_isActive || (isWon && !recordIt)) {
       return;
     }
 
@@ -137,11 +133,22 @@ class WordleLogic extends ChangeNotifier {
 
     var currLetterState = processGuess(guess);
 
+    //print(numOfGuesses);
+
     if (recordIt && currLetterState.every((l) => l == LetterState.correctSpot)) {
       // check for win
       isWon = true;
       Guess(letters: currentGuess, playerid: "sPLSBgz").init(ref.read).save();
       Game(word: currentGuess, guesses: numOfGuesses, playerid: "sPLSBgz").init(ref.read).save();
+    } else if (currLetterState.every((l) => l == LetterState.correctSpot)) {
+      isWon = true;
+    } else if (numOfGuesses >= 5) {
+      // sorry, you lost
+      _isActive = false;
+      if(recordIt) {
+        Guess(letters: currentGuess, playerid: "sPLSBgz").init(ref.read).save();
+        Game(word: currentGuess, guesses: 99, playerid: "sPLSBgz").init(ref.read).save();
+      }
     } else if (recordIt) {
       Guess(letters: currentGuess, playerid: "sPLSBgz").init(ref.read).save();
     }

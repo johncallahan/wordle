@@ -10,10 +10,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 class KeyboardButtonWidget extends ConsumerStatefulWidget {
   String _value;
-  WordleLogic _logic;
   LetterState _letterState = LetterState.unknown;
 
-  KeyboardButtonWidget(this._logic, this._value, {Key? key}) : super(key: key);
+  KeyboardButtonWidget(this._value, {Key? key}) : super(key: key);
 
   @override
   _KeyboardButtonWidgetState createState() => _KeyboardButtonWidgetState();
@@ -22,9 +21,9 @@ class KeyboardButtonWidget extends ConsumerStatefulWidget {
 class _KeyboardButtonWidgetState extends ConsumerState<KeyboardButtonWidget> {
   @override
   Widget build(BuildContext context) {
-    final myLogic = ref.watch(logicChangeNotifier);
+    final _logic = ref.watch(logicChangeNotifier);
     var letter = widget._value.codeUnitAt(0) - 65;
-    var letterState = widget._logic.letterStates[letter];
+    var letterState = _logic.letterStates[letter];
 
     return Padding(
       padding: const EdgeInsets.only(left: 1.0, right: 1.0),
@@ -41,9 +40,9 @@ class _KeyboardButtonWidgetState extends ConsumerState<KeyboardButtonWidget> {
             textStyle: MaterialStateProperty.all(_getTextStyle(letterState)),
           ),
           onPressed: () {
-            //setState(() {
-              widget._logic.addLetter(widget._value);
-            //});
+            setState(() {
+              _logic.addLetter(widget._value);
+            });
           },
         ),
       ),
