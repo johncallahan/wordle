@@ -17,6 +17,9 @@ import '../main.data.dart';
 import '../models/game.dart';
 import '../environment_config.dart';
 
+import 'bar_chart.dart';
+import 'chart_container.dart';
+
 class GamesScreen extends StatefulHookConsumerWidget {
   const GamesScreen({Key? key}) : super(key: key);
 
@@ -78,6 +81,11 @@ class _GamesScreenState extends ConsumerState<GamesScreen> {
           for (final k in map.keys)
             ListTile(
               title: Text('${map[k]} ${map[k] == 1 ? "guess" : "guesses"} by ${k} ${k == playername ? "(YOU)" : ""}'),
+            ),
+            ChartContainer(
+              title: 'Last 7 Days',
+              color: Color(0xffD9E3F0),
+              chart: BarChartContent()
             ),
         ],
       ),
