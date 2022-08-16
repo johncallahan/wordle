@@ -12,6 +12,15 @@ List<BarChartGroupData> barChartGroupData = [
     BarChartRodData(toY: 5),
   ]),
    BarChartGroupData(x: 4, barRods: [
+    BarChartRodData(toY: 0),
+  ]),
+   BarChartGroupData(x: 5, barRods: [
+    BarChartRodData(toY: 3),
+  ]),
+   BarChartGroupData(x: 6, barRods: [
+    BarChartRodData(toY: 3),
+  ]),
+   BarChartGroupData(x: 7, barRods: [
     BarChartRodData(toY: 3),
   ]),
 ];

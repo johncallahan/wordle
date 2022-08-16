@@ -10,16 +10,23 @@ class BarChartContent extends StatelessWidget {
       BarChartData(
         maxY: 5,
         barGroups: barChartGroupData,
+        borderData: FlBorderData(
+          show: false,
+        ),
+        gridData: FlGridData(show: false),
         titlesData: FlTitlesData(
           show: true,
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
-              showTitles: false,
+              showTitles: true,
+              getTitlesWidget: bottomTitles,
+              reservedSize: 38,
             ),
           ),
           leftTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
+              interval: 1,
             ),
           ),
           topTitles: AxisTitles(
@@ -34,6 +41,65 @@ class BarChartContent extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget bottomTitles(double value, TitleMeta meta) {
+    List<String> titles = ["", "Mn", "Te", "Wd", "Tu", "Fr", "St", "Su", ""];
+
+    Widget text = Text(
+      titles[value.toInt()],
+      style: const TextStyle(
+        color: Color(0xff7589a2),
+        fontWeight: FontWeight.bold,
+        fontSize: 14,
+      ),
+    );
+
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      space: 16, //margin top
+      child: text,
+    );
+  }
+
+  Widget getTitles(double value, TitleMeta meta) {
+    const style = TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+      fontSize: 14,
+    );
+    Widget text;
+    switch (value.toInt()) {
+      case 1:
+        text = const Text('M', style: style);
+        break;
+      case 2:
+        text = const Text('T', style: style);
+        break;
+      case 3:
+        text = const Text('W', style: style);
+        break;
+      case 4:
+        text = const Text('T', style: style);
+        break;
+      case 5:
+        text = const Text('F', style: style);
+        break;
+      case 6:
+        text = const Text('S', style: style);
+        break;
+      case 7:
+        text = const Text('S', style: style);
+        break;
+      default:
+        text = const Text('', style: style);
+        break;
+    }
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      space: 16,
+      child: text,
     );
   }
 }
