@@ -45,7 +45,7 @@ class BarChartContent extends StatelessWidget {
   }
 
   Widget bottomTitles(double value, TitleMeta meta) {
-    List<String> titles = ["", "Mn", "Te", "Wd", "Tu", "Fr", "St", "Su", ""];
+    List<String> titles = ["Mn", "Te", "Wd", "Tu", "Fr", "St", "Su"];
 
     Widget text = Text(
       titles[value.toInt()],
@@ -71,25 +71,25 @@ class BarChartContent extends StatelessWidget {
     );
     Widget text;
     switch (value.toInt()) {
-      case 1:
+      case 0:
         text = const Text('M', style: style);
         break;
-      case 2:
+      case 1:
         text = const Text('T', style: style);
         break;
-      case 3:
+      case 2:
         text = const Text('W', style: style);
         break;
-      case 4:
+      case 3:
         text = const Text('T', style: style);
         break;
-      case 5:
+      case 4:
         text = const Text('F', style: style);
         break;
-      case 6:
+      case 5:
         text = const Text('S', style: style);
         break;
-      case 7:
+      case 6:
         text = const Text('S', style: style);
         break;
       default:
