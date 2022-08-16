@@ -159,7 +159,8 @@ class _WordleWidgetState extends ConsumerState<WordleWidget> {
                   if (state.isLoading) {
                     return CircularProgressIndicator();
                   }
-                  return pageIndex == 0 ? Column(
+                  return !isLoggedIn ? Login()
+                  : pageIndex == 0 ? Column(
                     children: [
                       GameWidget(),
                       KeyboardWidget(),

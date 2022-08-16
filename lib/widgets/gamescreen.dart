@@ -75,28 +75,10 @@ class _GamesScreenState extends ConsumerState<GamesScreen> {
       },
       child: ListView(
         children: [
-          //TextField(
-          //  controller: _newGameController,
-          //  onSubmitted: (value) async {
-          //    Game(word: value).init(ref.read).save();
-          //    _newGameController.clear();
-          //  },
-          //),
           for (final k in map.keys)
-            //Dismissible(
-            //  key: ValueKey(game),
-            //  direction: DismissDirection.endToStart,
-            //  onDismissed: (_) => game.delete(),
-            //  child:
-              ListTile(
-                //leading: Checkbox(
-                //  value: game.guesses > 0,
-                //  onChanged: (value) => game.toggleGuesses().save(),
-                //),
-                //title: Text('${game.word} [${game.guesses} guesses by ${game.playerid}]'),
-                title: Text('${map[k]} ${map[k] == 1 ? "guess" : "guesses"} by ${k} ${k == playername ? "(YOU)" : ""}'),
-              ),
-            //),
+            ListTile(
+              title: Text('${map[k]} ${map[k] == 1 ? "guess" : "guesses"} by ${k} ${k == playername ? "(YOU)" : ""}'),
+            ),
         ],
       ),
     );
