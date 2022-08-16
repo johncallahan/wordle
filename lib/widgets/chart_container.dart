@@ -36,8 +36,8 @@ class ChartContainer extends StatelessWidget {
             ),
             Expanded(
                 child: Container(
-              padding: EdgeInsets.only(top: 10),
-              child: chart,
+                  padding: EdgeInsets.only(top: 10),
+                  child: chart,
             ))
           ],
         ),

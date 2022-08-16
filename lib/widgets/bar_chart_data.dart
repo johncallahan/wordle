@@ -1,7 +1,12 @@
 import 'dart:ui';
 import 'package:fl_chart/fl_chart.dart';
 
-List<BarChartGroupData> barChartGroupData = [
+final Future<List<BarChartGroupData>> barChartGroupData = Future<List<BarChartGroupData>>.delayed(
+    const Duration(seconds: 2),
+    () => old_barChartGroupData,
+  );
+
+List<BarChartGroupData> old_barChartGroupData = [
   BarChartGroupData(x: 0, barRods: [
     BarChartRodData(toY: 4),
   ]),

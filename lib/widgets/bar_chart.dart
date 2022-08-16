@@ -6,41 +6,53 @@ import 'package:flutter/widgets.dart';
 class BarChartContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BarChart(
-      BarChartData(
-        maxY: 5,
-        barGroups: barChartGroupData,
-        borderData: FlBorderData(
-          show: false,
-        ),
-        gridData: FlGridData(show: false),
-        titlesData: FlTitlesData(
-          show: true,
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: bottomTitles,
-              reservedSize: 38,
+    return FutureBuilder<List<BarChartGroupData>>(
+      future: barChartGroupData,
+      builder: (BuildContext context, AsyncSnapshot<List<BarChartGroupData>> snapshot) {
+        if(snapshot.hasData) {
+          return BarChart(
+          BarChartData(
+            maxY: 5,
+            barGroups: snapshot.data,
+            borderData: FlBorderData(
+              show: false,
             ),
-          ),
-          leftTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              interval: 1,
+            gridData: FlGridData(show: false),
+            titlesData: FlTitlesData(
+              show: true,
+              bottomTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  getTitlesWidget: bottomTitles,
+                  reservedSize: 38,
+                ),
+              ),
+              leftTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  interval: 1,
+                ),
+              ),
+              topTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: false,
+                ),
+              ),
+              rightTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: false,
+                ),
+              ),
             ),
-          ),
-          topTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: false,
-            ),
-          ),
-          rightTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: false,
-            ),
-          ),
-        ),
-      ),
+          ));
+        } else {
+          return SizedBox(
+                width: 60,
+                height: 60,
+                child: CircularProgressIndicator(),
+              );
+        }
+      }
     );
   }
 
