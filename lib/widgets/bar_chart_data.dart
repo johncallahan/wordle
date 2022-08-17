@@ -5,6 +5,28 @@ import 'package:http/http.dart' as http;
 import '../widgets/my_shared_preferences.dart';
 import '../environment_config.dart';
 
+BarChartRodData _getScoreBarChartRodData(int index, int currentDayOfWeek, List<dynamic> jsonResponse) {
+  try {
+    if(jsonResponse[index]['dayofweek'] == currentDayOfWeek) {
+      int score = jsonResponse[index]['guesses'];
+      switch(score) {
+        case 0:
+          return BarChartRodData(toY: 0.5, color: Color(0xFF00FF00), width: 15);
+        case 1: case 2: case 3: case 4: case 5:
+          return BarChartRodData(toY: score.toDouble(), color: Color(0xFF42A5F5), width: 12);
+        case -1:
+          return BarChartRodData(toY: 0.5, color: Color(0xFFFF0000), width: 15);
+        default:
+          return BarChartRodData(toY: 0.0, color: Color(0xFF42A5F5), width: 12);
+      }
+    } else {
+      return BarChartRodData(toY: 0.0, color: Color(0xFF42A5F5), width: 12);
+    }
+  } catch(e) {
+    return BarChartRodData(toY: 0.0, color: Color(0xFF42A5F5), width: 12);
+  }
+}
+
 Future<List<BarChartGroupData>> getScores() async {
   String playerid = await MySharedPreferences.instance.getStringValue("playerid");
   var headers = {
@@ -17,29 +39,19 @@ Future<List<BarChartGroupData>> getScores() async {
     var response = await http.get(url, headers: headers);
     var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
 
-    return [
-    BarChartGroupData(x: 0, barRods: [
-      BarChartRodData(toY: jsonResponse.length > 0 ? jsonResponse[0]["guesses"].toDouble() : 0),
-    ]),
-     BarChartGroupData(x: 1, barRods: [
-      BarChartRodData(toY: jsonResponse.length > 1 ? jsonResponse[1]["guesses"].toDouble() : 0),
-    ]),
-     BarChartGroupData(x: 2, barRods: [
-      BarChartRodData(toY: jsonResponse.length > 2 ? jsonResponse[2]["guesses"].toDouble() : 0),
-    ]),
-     BarChartGroupData(x: 3, barRods: [
-      BarChartRodData(toY: jsonResponse.length > 3 ? jsonResponse[3]["guesses"].toDouble() : 0),
-    ]),
-     BarChartGroupData(x: 4, barRods: [
-      BarChartRodData(toY: jsonResponse.length > 4 ? jsonResponse[4]["guesses"].toDouble() : 0),
-    ]),
-     BarChartGroupData(x: 5, barRods: [
-      BarChartRodData(toY: jsonResponse.length > 5 ? jsonResponse[5]["guesses"].toDouble() : 0),
-    ]),
-     BarChartGroupData(x: 6, barRods: [
-      BarChartRodData(toY: jsonResponse.length > 6 ? jsonResponse[6]["guesses"].toDouble() : 0),
-    ]),
-    ];
+    List<BarChartGroupData> listArray = [];
+
+    int i = 0;
+    for(var currentDayOfWeek=0; currentDayOfWeek < 7; currentDayOfWeek++) {
+      listArray.add(
+        BarChartGroupData(
+          x: currentDayOfWeek,
+          barRods: [ _getScoreBarChartRodData(i,currentDayOfWeek,jsonResponse) ])
+      );
+      i = i < jsonResponse.length - 1 ? i + 1 : i;
+    }
+
+    return listArray;
   } catch(_) {
     return empty_barChartGroupData;
   }
