@@ -64,6 +64,30 @@ class _GamesScreenState extends ConsumerState<GamesScreen> {
     Map<String,int> map = {};
     state.model.forEach((x) => map[x.playerid] = (map[x.playerid] ?? 0) + x.guesses);
 
+    List<Widget> children = [];
+
+    if(map.keys.length > 0) {
+      for (final k in map.keys) {
+        children.add(
+          ListTile(
+            title: Text('${map[k]} ${map[k] == 1 ? "guess" : "guesses"} by ${k} ${k == playername ? "(YOU)" : ""}'),
+          )
+        );
+      }
+    } else {
+      children.add(
+        ListTile(title: Text('You have not finished today'))
+      );
+    }
+
+    children.add(
+      ChartContainer(
+        title: 'This week',
+        color: Color(0xffD9E3F0),
+        chart: BarChartContent()
+      )
+    );
+
     return RefreshIndicator(
       onRefresh: () async {
           if(await checkConnection()) {
@@ -77,17 +101,7 @@ class _GamesScreenState extends ConsumerState<GamesScreen> {
           }
       },
       child: ListView(
-        children: [
-          for (final k in map.keys)
-            ListTile(
-              title: Text('${map[k]} ${map[k] == 1 ? "guess" : "guesses"} by ${k} ${k == playername ? "(YOU)" : ""}'),
-            ),
-            ChartContainer(
-              title: 'This week',
-              color: Color(0xffD9E3F0),
-              chart: BarChartContent()
-            ),
-        ],
+        children: children
       ),
     );
   }

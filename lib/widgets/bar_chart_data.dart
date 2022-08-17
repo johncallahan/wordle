@@ -58,25 +58,25 @@ Future<List<BarChartGroupData>> getScores() async {
 }
 
 List<BarChartGroupData> empty_barChartGroupData = [
-BarChartGroupData(x: 0, barRods: [
-  BarChartRodData(toY: 0),
-]),
- BarChartGroupData(x: 1, barRods: [
-  BarChartRodData(toY: 0),
-]),
- BarChartGroupData(x: 2, barRods: [
-  BarChartRodData(toY: 0),
-]),
- BarChartGroupData(x: 3, barRods: [
-  BarChartRodData(toY: 0),
-]),
- BarChartGroupData(x: 4, barRods: [
-  BarChartRodData(toY: 0),
-]),
- BarChartGroupData(x: 5, barRods: [
-  BarChartRodData(toY: 0),
-]),
- BarChartGroupData(x: 6, barRods: [
-  BarChartRodData(toY: 0),
-]),
+  BarChartGroupData(x: 0, barRods: [
+    BarChartRodData(toY: 0),
+  ]),
+  BarChartGroupData(x: 1, barRods: [
+    BarChartRodData(toY: 0),
+  ]),
+  BarChartGroupData(x: 2, barRods: [
+    BarChartRodData(toY: 0),
+  ]),
+  BarChartGroupData(x: 3, barRods: [
+    BarChartRodData(toY: 0),
+  ]),
+  BarChartGroupData(x: 4, barRods: [
+    BarChartRodData(toY: 0),
+  ]),
+  BarChartGroupData(x: 5, barRods: [
+    BarChartRodData(toY: 0),
+  ]),
+  BarChartGroupData(x: 6, barRods: [
+    BarChartRodData(toY: 0),
+  ]),
 ];
