@@ -93,7 +93,7 @@ class _GamesScreenState extends ConsumerState<GamesScreen> {
       }
     } else {
       children.add(
-        ListTile(title: Text('You have not finished today'))
+        ListTile(title: Text('No one has played yet today'))
       );
       children.add(
         ChartContainer(
