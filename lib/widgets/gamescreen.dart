@@ -77,19 +77,35 @@ class _GamesScreenState extends ConsumerState<GamesScreen> {
 
     if(map.keys.length > 0) {
       for (final k in map.keys) {
-        children.add(
-          ListTile(
-            title: Text('${map[k]} ${map[k] == 1 ? "guess" : "guesses"} by ${k} ${k == playername ? "(YOU)" : ""}'),
-          )
-        );
-        String friendPlayerId = pidmap[k]!;
+        int guessCount = 0;
+        guessCount = map[k]!;
+        if(guessCount > 0 && guessCount < 6) {
           children.add(
-            ChartContainer(
-              title: 'This week',
-              color: Color(0xffD9E3F0),
-              chart: BarChartContent(friendPlayerId)
+            ListTile(
+              title: Text('${map[k]} ${map[k] == 1 ? "guess" : "guesses"} by ${k} ${k == playername ? "(YOU)" : ""}'),
             )
           );
+        } else if(map[k] == 0) {
+          children.add(
+            ListTile(
+              title: Text('HOLE IN ONE by ${k} ${k == playername ? "(YOU)" : ""}'),
+            )
+          );
+        } else {
+          children.add(
+            ListTile(
+              title: Text('${k} ${k == playername ? "(YOU) failed to guess" : ""}'),
+            )
+          );
+        }
+        String friendPlayerId = pidmap[k]!;
+        children.add(
+          ChartContainer(
+            title: 'This week (${k})',
+            color: Color(0xffD9E3F0),
+            chart: BarChartContent(friendPlayerId)
+          )
+        );
       }
     } else {
       children.add(
@@ -119,6 +135,7 @@ class _GamesScreenState extends ConsumerState<GamesScreen> {
           }
       },
       child: ListView(
+        padding: EdgeInsets.only(bottom: 200),
         children: children
       ),
     );
