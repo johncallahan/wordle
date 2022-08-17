@@ -7,7 +7,7 @@ class BarChartContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<BarChartGroupData>>(
-      future: barChartGroupData,
+      future: getScores(),
       builder: (BuildContext context, AsyncSnapshot<List<BarChartGroupData>> snapshot) {
         if(snapshot.hasData) {
           return BarChart(
@@ -46,18 +46,19 @@ class BarChartContent extends StatelessWidget {
             ),
           ));
         } else {
-          return SizedBox(
-                width: 60,
-                height: 60,
-                child: CircularProgressIndicator(),
-              );
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[ CircularProgressIndicator() ],
+            ),
+          );
         }
       }
     );
   }
 
   Widget bottomTitles(double value, TitleMeta meta) {
-    List<String> titles = ["Mn", "Te", "Wd", "Tu", "Fr", "St", "Su"];
+    List<String> titles = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
     Widget text = Text(
       titles[value.toInt()],
@@ -84,25 +85,25 @@ class BarChartContent extends StatelessWidget {
     Widget text;
     switch (value.toInt()) {
       case 0:
-        text = const Text('M', style: style);
+        text = const Text('Su', style: style);
         break;
       case 1:
-        text = const Text('T', style: style);
+        text = const Text('Mo', style: style);
         break;
       case 2:
-        text = const Text('W', style: style);
+        text = const Text('Tu', style: style);
         break;
       case 3:
-        text = const Text('T', style: style);
+        text = const Text('We', style: style);
         break;
       case 4:
-        text = const Text('F', style: style);
+        text = const Text('Th', style: style);
         break;
       case 5:
-        text = const Text('S', style: style);
+        text = const Text('Fr', style: style);
         break;
       case 6:
-        text = const Text('S', style: style);
+        text = const Text('Sa', style: style);
         break;
       default:
         text = const Text('', style: style);

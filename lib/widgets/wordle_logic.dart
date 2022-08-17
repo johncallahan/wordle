@@ -34,6 +34,7 @@ class WordleLogic extends ChangeNotifier {
     var rand = Random(now.year * 10000 + now.month * 100 + now.day);
     var index = rand.nextInt(allWords.length);
     _word = allWords[index].toUpperCase().split('');
+    print(_word);
   }
 
   WordleLogic() {

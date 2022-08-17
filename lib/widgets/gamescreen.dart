@@ -83,7 +83,7 @@ class _GamesScreenState extends ConsumerState<GamesScreen> {
               title: Text('${map[k]} ${map[k] == 1 ? "guess" : "guesses"} by ${k} ${k == playername ? "(YOU)" : ""}'),
             ),
             ChartContainer(
-              title: 'Last 7 Days',
+              title: 'This week',
               color: Color(0xffD9E3F0),
               chart: BarChartContent()
             ),
