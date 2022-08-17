@@ -29,6 +29,7 @@ class GamesScreen extends StatefulHookConsumerWidget {
 
 class _GamesScreenState extends ConsumerState<GamesScreen> {
   String playername = "";
+  String playerid = "";
 
   Future<bool> checkConnection() async {
     var url = Uri.parse(EnvironmentConfig.BASE_PROTOCOL + "://" + EnvironmentConfig.BASE_HOST + ":" + EnvironmentConfig.BASE_PORT + '/games');
@@ -50,6 +51,11 @@ class _GamesScreenState extends ConsumerState<GamesScreen> {
       .then((value) => setState(() {
           playername = value;
         }));
+    MySharedPreferences.instance
+      .getStringValue("playerid")
+      .then((value) => setState(() {
+          playerid = value;
+        }));
   }
 
   @override
@@ -62,7 +68,10 @@ class _GamesScreenState extends ConsumerState<GamesScreen> {
     }
 
     Map<String,int> map = {};
-    state.model.forEach((x) => map[x.playerid] = (map[x.playerid] ?? 0) + x.guesses);
+    state.model.forEach((x) => map[x.playername] = (map[x.playername] ?? 0) + x.guesses);
+
+    Map<String,String?> pidmap = {};
+    state.model.forEach((x) => pidmap[x.playername] = x.playerid);
 
     List<Widget> children = [];
 
@@ -73,20 +82,29 @@ class _GamesScreenState extends ConsumerState<GamesScreen> {
             title: Text('${map[k]} ${map[k] == 1 ? "guess" : "guesses"} by ${k} ${k == playername ? "(YOU)" : ""}'),
           )
         );
+        String friendPlayerId = pidmap[k]!;
+          children.add(
+            ChartContainer(
+              title: 'This week',
+              color: Color(0xffD9E3F0),
+              chart: BarChartContent(friendPlayerId)
+            )
+          );
       }
     } else {
       children.add(
         ListTile(title: Text('You have not finished today'))
       );
+      children.add(
+        ChartContainer(
+          title: 'This week',
+          color: Color(0xffD9E3F0),
+          chart: BarChartContent(this.playerid)
+        )
+      );
     }
 
-    children.add(
-      ChartContainer(
-        title: 'This week',
-        color: Color(0xffD9E3F0),
-        chart: BarChartContent()
-      )
-    );
+
 
     return RefreshIndicator(
       onRefresh: () async {

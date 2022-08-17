@@ -27,8 +27,7 @@ BarChartRodData _getScoreBarChartRodData(int index, int currentDayOfWeek, List<d
   }
 }
 
-Future<List<BarChartGroupData>> getScores() async {
-  String playerid = await MySharedPreferences.instance.getStringValue("playerid");
+Future<List<BarChartGroupData>> getScores(String playerid) async {
   var headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",

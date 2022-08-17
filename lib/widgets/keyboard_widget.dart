@@ -24,6 +24,7 @@ class KeyboardWidget extends ConsumerStatefulWidget {
 
 class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
   String playerid = "";
+  String playername = "";
 
   @override
   void initState() {
@@ -32,6 +33,11 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
       .getStringValue("playerid")
       .then((value) => setState(() {
           playerid = value;
+        }));
+    MySharedPreferences.instance
+      .getStringValue("playername")
+      .then((value) => setState(() {
+          playername = value;
         }));
   }
 
@@ -78,7 +84,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
               child: TextButton(
                 onPressed: () {
                   setState(() {
-                    _logic.submitGuess(ref,_logic.currentGuess,state.model.length,true,playerid);
+                    _logic.submitGuess(ref,_logic.currentGuess,state.model.length,true,playerid,playername);
                     _logic.currentGuess = "";
                   });
                 },

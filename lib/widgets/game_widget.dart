@@ -21,6 +21,7 @@ class GameWidget extends StatefulHookConsumerWidget {
 
 class _GameWidgetState extends ConsumerState<GameWidget> {
   String playerid = "";
+  String playername = "";
 
   @override
   void initState() {
@@ -29,6 +30,11 @@ class _GameWidgetState extends ConsumerState<GameWidget> {
       .getStringValue("playerid")
       .then((value) => setState(() {
           playerid = value;
+        }));
+    MySharedPreferences.instance
+      .getStringValue("playername")
+      .then((value) => setState(() {
+          playername = value;
         }));
   }
 
@@ -43,61 +49,61 @@ class _GameWidgetState extends ConsumerState<GameWidget> {
           SizedBox(height: 5),
           Row(
             children: [
-              GameLetterWidget(playerid, 0, 0),
-              GameLetterWidget(playerid, 0, 1),
-              GameLetterWidget(playerid, 0, 2),
-              GameLetterWidget(playerid, 0, 3),
-              GameLetterWidget(playerid, 0, 4),
+              GameLetterWidget(playerid, playername, 0, 0),
+              GameLetterWidget(playerid, playername, 0, 1),
+              GameLetterWidget(playerid, playername, 0, 2),
+              GameLetterWidget(playerid, playername, 0, 3),
+              GameLetterWidget(playerid, playername, 0, 4),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
           Row(
             children: [
-              GameLetterWidget(playerid, 1, 0),
-              GameLetterWidget(playerid, 1, 1),
-              GameLetterWidget(playerid, 1, 2),
-              GameLetterWidget(playerid, 1, 3),
-              GameLetterWidget(playerid, 1, 4),
+              GameLetterWidget(playerid, playername, 1, 0),
+              GameLetterWidget(playerid, playername, 1, 1),
+              GameLetterWidget(playerid, playername, 1, 2),
+              GameLetterWidget(playerid, playername, 1, 3),
+              GameLetterWidget(playerid, playername, 1, 4),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
           Row(
             children: [
-              GameLetterWidget(playerid, 2, 0),
-              GameLetterWidget(playerid, 2, 1),
-              GameLetterWidget(playerid, 2, 2),
-              GameLetterWidget(playerid, 2, 3),
-              GameLetterWidget(playerid, 2, 4),
+              GameLetterWidget(playerid, playername, 2, 0),
+              GameLetterWidget(playerid, playername, 2, 1),
+              GameLetterWidget(playerid, playername, 2, 2),
+              GameLetterWidget(playerid, playername, 2, 3),
+              GameLetterWidget(playerid, playername, 2, 4),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
           Row(
             children: [
-              GameLetterWidget(playerid, 3, 0),
-              GameLetterWidget(playerid, 3, 1),
-              GameLetterWidget(playerid, 3, 2),
-              GameLetterWidget(playerid, 3, 3),
-              GameLetterWidget(playerid, 3, 4),
+              GameLetterWidget(playerid, playername, 3, 0),
+              GameLetterWidget(playerid, playername, 3, 1),
+              GameLetterWidget(playerid, playername, 3, 2),
+              GameLetterWidget(playerid, playername, 3, 3),
+              GameLetterWidget(playerid, playername, 3, 4),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
           Row(
             children: [
-              GameLetterWidget(playerid, 4, 0),
-              GameLetterWidget(playerid, 4, 1),
-              GameLetterWidget(playerid, 4, 2),
-              GameLetterWidget(playerid, 4, 3),
-              GameLetterWidget(playerid, 4, 4),
+              GameLetterWidget(playerid, playername, 4, 0),
+              GameLetterWidget(playerid, playername, 4, 1),
+              GameLetterWidget(playerid, playername, 4, 2),
+              GameLetterWidget(playerid, playername, 4, 3),
+              GameLetterWidget(playerid, playername, 4, 4),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
           Row(
             children: [
-              GameLetterWidget(playerid, 5, 0),
-              GameLetterWidget(playerid, 5, 1),
-              GameLetterWidget(playerid, 5, 2),
-              GameLetterWidget(playerid, 5, 3),
-              GameLetterWidget(playerid, 5, 4),
+              GameLetterWidget(playerid, playername, 5, 0),
+              GameLetterWidget(playerid, playername, 5, 1),
+              GameLetterWidget(playerid, playername, 5, 2),
+              GameLetterWidget(playerid, playername, 5, 3),
+              GameLetterWidget(playerid, playername, 5, 4),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),

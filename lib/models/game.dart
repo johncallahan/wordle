@@ -13,11 +13,12 @@ class Game with DataModel<Game> {
   final String word;
   final int guesses;
   final String playerid;
+  final String playername;
 
-  Game({this.id, required this.word, this.guesses = 0, required this.playerid});
+  Game({this.id, required this.word, this.guesses = 0, required this.playerid, required this.playername});
 
   Game toggleGuesses() {
-    return Game(id: this.id, word: this.word, guesses: this.guesses > 0 ? 0 : 1, playerid: this.playerid)
+    return Game(id: this.id, word: this.word, guesses: this.guesses > 0 ? 0 : 1, playerid: this.playerid, playername: this.playername)
         .was(this);
   }
 }

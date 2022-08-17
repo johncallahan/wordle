@@ -4,10 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class BarChartContent extends StatelessWidget {
+  final String playerid;
+
+  BarChartContent(this.playerid);
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<BarChartGroupData>>(
-      future: getScores(),
+      future: getScores(this.playerid),
       builder: (BuildContext context, AsyncSnapshot<List<BarChartGroupData>> snapshot) {
         if(snapshot.hasData) {
           return BarChart(

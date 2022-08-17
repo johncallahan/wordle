@@ -120,7 +120,7 @@ class WordleLogic extends ChangeNotifier {
     return currLetterState;
   }
 
-  void submitGuess(WidgetRef ref, String guessString, int numOfGuesses, bool recordIt, String playerid) {
+  void submitGuess(WidgetRef ref, String guessString, int numOfGuesses, bool recordIt, String playerid, String playername) {
     if (!_isActive || (isWon && !recordIt)) {
       return;
     }
@@ -140,7 +140,7 @@ class WordleLogic extends ChangeNotifier {
       // check for win
       isWon = true;
       Guess(letters: currentGuess, playerid: playerid).init(ref.read).save();
-      Game(word: currentGuess, guesses: numOfGuesses, playerid: playerid).init(ref.read).save();
+      Game(word: currentGuess, guesses: numOfGuesses, playerid: playerid, playername: playername).init(ref.read).save();
     } else if (currLetterState.every((l) => l == LetterState.correctSpot)) {
       isWon = true;
     } else if (numOfGuesses >= 5) {
@@ -148,7 +148,7 @@ class WordleLogic extends ChangeNotifier {
       _isActive = false;
       if(recordIt) {
         Guess(letters: currentGuess, playerid: playerid).init(ref.read).save();
-        Game(word: currentGuess, guesses: 99, playerid: playerid).init(ref.read).save();
+        Game(word: currentGuess, guesses: 99, playerid: playerid,  playername: playername).init(ref.read).save();
       }
     } else if (recordIt) {
       Guess(letters: currentGuess, playerid: playerid).init(ref.read).save();
