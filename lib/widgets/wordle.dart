@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'game_widget.dart';
 import 'keyboard_widget.dart';
 import 'gamescreen.dart';
+import 'friendsscreen.dart';
 import 'guessscreen.dart';
 import 'game_widget.dart';
 
@@ -165,7 +166,7 @@ class _WordleWidgetState extends ConsumerState<WordleWidget> {
                       GameWidget(),
                       KeyboardWidget(),
                     ],
-                  ) : pageIndex == 1 ? GamesScreen()
+                  ) : pageIndex == 1 ? FriendsScreen()
                   : pageIndex == 2 ? GuessesScreen()
                   : isLoggedIn ? Profile() : Login();
                 }
